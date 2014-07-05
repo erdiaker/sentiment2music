@@ -5,6 +5,7 @@ import sys
 import fluidsynth
 import time
 from threading import Thread
+from sentiment_analyzer import SentimentAnalyzer
 
 _mod = 12
 _instPos = 106 # banjo
@@ -32,8 +33,9 @@ def main():
   sfid = fs.sfload('FluidR3_GM.sf2')
   fs.program_select(0, sfid, 0, 0)
 
-  # set initial sentiment
-  global _sentiment
+  # set sentiment analyzer and initial sentiment
+  global _sa, _sentiment
+  _sa = SentimentAnalyzer()
   _sentiment = Sentiment.positive
   setSentimentSettings(_sentiment, fs)
 
@@ -62,7 +64,7 @@ def main():
   fs.delete()
 
 def extractSentiment(line):
-  if line == 'positive':
+  if _sa.analyze(line) == 'pos':
     return Sentiment.positive
   else:
     return Sentiment.negative
@@ -118,7 +120,6 @@ def setDurations(sentiment):
   else:
     _durationPool = [1.0]*1 + [0.5]*2
   if _debug: print '[Debug] Durations:', _durationPool, '\n'
-
 
 def generateMidiNotesFromPitchClasses(pitchClasses, octave):
   return [getMidiNote(pc, octave) for pc in pitchClasses]
