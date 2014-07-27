@@ -36,6 +36,10 @@ def main():
   # set sentiment analyzer and initial sentiment
   global _sa, _sentiment
   _sa = SentimentAnalyzer()
+  print 'Training sentiment analyzer. This may take a few minutes...'
+  sys.stdout.flush()
+  _sa.train()
+  print 'Done.\n'
   _sentiment = Sentiment.positive
   setSentimentSettings(_sentiment, fs)
 
