@@ -50,13 +50,12 @@ class SentimentAnalyzer:
   @property
   def db(self):
     '''Database to train on.'''
-    if self._db: 
-      return self._db
-    else:
-      return LazyCorpusLoader(
+    if self._db is None: 
+      self._db = LazyCorpusLoader(
         self._dbName, CategorizedPlaintextCorpusReader,
         r'(?!\.).*\.txt', cat_pattern=r'(neg|pos)/.*',
         encoding='ascii')
+    return self._db
 
   @db.setter
   def db(self, value):
