@@ -28,6 +28,9 @@ def main():
     elif sentiment == 'neg':
       lc.sentiment = Sentiment.NEGATIVE
 
+  # release live composer resources
+  lc.close()
+
 if __name__ == '__main__':
   main()
 
