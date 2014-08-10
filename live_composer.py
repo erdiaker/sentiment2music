@@ -27,7 +27,7 @@ class LiveComposer(Thread):
     '''Initialize live composer.'''
     super(LiveComposer, self).__init__()
     self.daemon = True
-    self.lock = Lock()
+    self._lock = Lock()
 
     self._fs = Synth()
     self._fs.start()
@@ -47,7 +47,7 @@ class LiveComposer(Thread):
   @sentiment.setter
   def sentiment(self, value):
     if self._sentiment != value:
-      with self.lock:
+      with self._lock:
         self._sentiment = value
         self._updateInstrument()
         self._updateKeyAndScale()
@@ -64,7 +64,7 @@ class LiveComposer(Thread):
 
   def _playNext(self):
     '''Play the next note.'''
-    with self.lock:
+    with self._lock:
       mn = self._pickMidiNote()
       dur = self._pickDuration()
 
