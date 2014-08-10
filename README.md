@@ -9,7 +9,7 @@ composes music on-the-fly based on the extracted sentiment.
 * `Python 2.7`
 * `NLTK`, a natural language processing library. [Installation](http://www.nltk.org/install.html).
 * `FluidSynth`, a real-time synthesizer. [Installation](http://www.fluidsynth.org/). Also available via [Homebrew](http://brew.sh/).
-* `PyFluidSynth`, Python wrapper for FluidSynth. [Installation](https://github.com/MostAwesomeDude/pyfluidsynth).
+* `PyFluidSynth`, Python wrapper for FluidSynth. [Installation](https://code.google.com/p/pyfluidsynth/).
 
 ## Installation
 After installing the dependency tools/libraries mentioned above, clone this
@@ -26,7 +26,7 @@ following in terminal:
 python -m nltk.downloader movie_reviews stopwords
 ```
 
-FluidSynth requires some sound font files (~145 MB) for the playback. Download
+FluidSynth needs some soundfont files (~145 MB) in order to synthesize sound. Download
 it into your installation directory as follows: 
 
 ```sh
