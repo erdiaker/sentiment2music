@@ -3,16 +3,14 @@
 import sys
 from sentiment_analyzer import SentimentAnalyzer
 from live_composer import LiveComposer, Sentiment
+import os
+
+SA_SERIAL_FILE='sentiment_analyzer.pickle'
+SOUNDFONT_FILE='fluid-soundfont-3.1/FluidR3_GM.sf2'
 
 def main():
-  # prepare sentiment analyzer
-  print 'Preparing sentiment analyzer. Please wait...'
-  sa = SentimentAnalyzer()
-  sa.train()
-  print 'Done.\n'
-  
-  # prepare live composer
-  lc = LiveComposer('fluid-soundfont-3.1/FluidR3_GM.sf2')
+  sa = prepareSentimentAnalyzer() 
+  lc = LiveComposer(SOUNDFONT_FILE)
   lc.start()
 
   print 'Type a sentence and press enter. Music will change according to the perceieved sentiment.'
@@ -30,6 +28,27 @@ def main():
 
   # release live composer resources
   lc.close()
+
+def prepareSentimentAnalyzer():
+  # import serializer. try cPickle if available.
+  try:
+    import cPickle as pickle
+  except:
+    import pickle
+
+  # try loading a previously serialized sentiment analyzer instance, if possible.
+  # otherwise, train from scratch.
+  try:
+    with open(SA_SERIAL_FILE) as f:
+      sa = pickle.load(f)
+  except (IOError, pickle.PickleError):
+    print 'Preparing sentiment analyzer for the first time. Please wait...'
+    sa = SentimentAnalyzer()
+    sa.train()
+    print 'Done.\n'
+    with open(SA_SERIAL_FILE, 'w') as f:
+      pickle.dump(sa, f)
+  return sa
 
 if __name__ == '__main__':
   main()

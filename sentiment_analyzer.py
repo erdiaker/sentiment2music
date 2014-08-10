@@ -6,6 +6,8 @@ from nltk.tokenize import word_tokenize
 from nltk.classify import NaiveBayesClassifier
 from nltk.probability import FreqDist, ConditionalFreqDist
 from nltk.metrics import BigramAssocMeasures
+from nltk.corpus.util import LazyCorpusLoader
+from nltk.corpus.reader import CategorizedPlaintextCorpusReader
 import random
 from operator import itemgetter
 
@@ -16,12 +18,25 @@ class SentimentAnalyzer:
   def __init__(self):
     '''Initialize the sentiment analyzer.'''
     self._splitRatio = 1.0
-    self._db = movie_reviews
+    self._dbName = 'movie_reviews'
+    self._db = None
     self._trainingFiles = {}
     self._testFiles = {}
     self._highInfoWords = set()
     self._highInfoWordLimit = 10000
     self._classifier = None
+
+  def __getstate__(self):
+    '''Store state for serialization.'''
+    state = self.__dict__.copy()
+    state['_db'] = None
+    state['_trainingFiles'] = {}
+    state['_testFiles'] = {}
+    return state
+
+  def __setstate__(self, value):
+    '''Restore instance from given state.'''
+    self.__dict__ = value
 
   @property
   def splitRatio(self):
@@ -35,7 +50,13 @@ class SentimentAnalyzer:
   @property
   def db(self):
     '''Database to train on.'''
-    return self._db
+    if self._db: 
+      return self._db
+    else:
+      return LazyCorpusLoader(
+        self._dbName, CategorizedPlaintextCorpusReader,
+        r'(?!\.).*\.txt', cat_pattern=r'(neg|pos)/.*',
+        encoding='ascii')
 
   @db.setter
   def db(self, value):
@@ -122,6 +143,7 @@ class SentimentAnalyzer:
 def _test():
   sa = SentimentAnalyzer()
   sa.splitRatio = 0.9
+  print 'Calculating accuracy with respect to test data. Please wait...'
   sa.train()
   print 'Accuracy:', sa.calculateAccuracy()
 
