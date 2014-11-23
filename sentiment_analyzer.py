@@ -81,13 +81,13 @@ class SentimentAnalyzer:
 
     for w in self.db.words(categories=POS_TAG):
       w = w.lower()
-      wordFreqs.inc(w)
-      condFreqs[POS_TAG].inc(w)
+      wordFreqs[w] += 1
+      condFreqs[POS_TAG][w] += 1
 
     for w in self.db.words(categories=NEG_TAG):
       w = w.lower()
-      wordFreqs.inc(w)
-      condFreqs[NEG_TAG].inc(w)
+      wordFreqs[w] += 1
+      condFreqs[NEG_TAG][w] += 1
 
     posCount = condFreqs[POS_TAG].N()
     negCount = condFreqs[NEG_TAG].N()
