@@ -7,9 +7,9 @@ composes music on-the-fly based on the extracted sentiment.
 ## Dependencies
 
 * `Python 2.7`
-* `NLTK`, a natural language processing library. [Installation](http://www.nltk.org/install.html).
-* `FluidSynth`, a real-time synthesizer. [Installation](http://www.fluidsynth.org/). Also available via [Homebrew](http://brew.sh/).
-* `PyFluidSynth`, Python wrapper for FluidSynth. [Installation](https://code.google.com/p/pyfluidsynth/).
+* `NLTK 3.0`, a natural language processing library. [Installation](http://www.nltk.org/install.html).
+* `FluidSynth 1.1`, a real-time synthesizer. [Installation](http://www.fluidsynth.org/). Also available via [Homebrew](http://brew.sh/).
+* `PyFluidSynth 1.2`, Python wrapper for FluidSynth. [Installation](https://code.google.com/p/pyfluidsynth/). Also available via [pip](https://pypi.python.org/pypi/pip).
 
 ## Installation
 After installing the dependency tools/libraries mentioned above, clone this
@@ -23,7 +23,7 @@ Sentiment analyzer needs some data (~15 MB) to train. Download it by typing the
 following in terminal:
 
 ```sh
-python -m nltk.downloader movie_reviews stopwords
+python -m nltk.downloader movie_reviews punkt
 ```
 
 FluidSynth needs some soundfont files (~145 MB) in order to synthesize sound. Download
