@@ -44,3 +44,5 @@ After a few seconds, you should start hearing something. The program will also
 prompt you to type a sentence. Do as instructed, and the music will change
 according to the sentiment of the sentence. Have fun!
 
+## License
+MIT
